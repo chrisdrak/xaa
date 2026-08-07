@@ -1,0 +1,45 @@
+name: Build APK
+
+# Τρέχει με το χέρι από την καρτέλα Actions του repository,
+# αλλά και σε κάθε push στο main.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Λήψη του κώδικα
+        uses: actions/checkout@v4
+
+      - name: Εγκατάσταση Java (χρειάζεται το Android build)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Εγκατάσταση Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Εγκατάσταση Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Εγκατάσταση Flet
+        run: pip install "flet[all]"
+
+      - name: Δημιουργία APK
+        run: flet build apk --verbose
+
+      - name: Ανέβασμα του APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: xa-screener-apk
+          path: build/apk/*.apk
+          if-no-files-found: error
