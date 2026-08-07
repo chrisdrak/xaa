@@ -1,0 +1,28 @@
+[project]
+name = "xa-screener"
+version = "1.0.0"
+description = "Screener μετοχών ΧΑ/ΧΑΚ και χαρτοφυλάκιο (δεδομένα capital.gr)"
+requires-python = ">=3.9"
+dependencies = ["flet"]
+
+[tool.flet]
+org = "gr.xascreener"
+product = "ΧΑ Screener"
+company = "XA Screener"
+build_number = 1
+
+[tool.flet.app]
+module = "main"
+path = "src"
+
+[tool.flet.android]
+# Απαραίτητο: η εφαρμογή κατεβάζει τα δεδομένα από το capital.gr
+min_sdk_version = 24
+
+[tool.flet.android.permission]
+"android.permission.INTERNET" = true
+"android.permission.ACCESS_NETWORK_STATE" = true
+
+[tool.flet.splash]
+color = "#12161c"
+dark_color = "#12161c"
